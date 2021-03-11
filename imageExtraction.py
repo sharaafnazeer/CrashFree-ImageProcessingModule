@@ -17,8 +17,10 @@ def getFrame(sec):
 data = []
 labels = []
 images = []
-for j in [25]:
+for j in [25, 26, 27, 28, 29, 30]:
+    print("Printing video series > %d" % j)
     for i in [0, 5, 10]:
+        print("Printing video sub series > %d" % i)
         vidcap = cv2.VideoCapture('video/Fold3_part1/' + str(j) + '/' + str(i) + '.mp4')
 
         sec = 0
@@ -31,14 +33,14 @@ for j in [25]:
             if landmarks is not None:
                 if sum(sum(landmarks)) != 0:
                     count += 1
-                    data.append(landmarks)
-                    labels.append([i])
-
                     cropper = FaceCropper()
                     arrayCount, face = cropper.generate(image, name="data/images/image_%d_%d_%d.jpg" % (j, i, count))
 
                     if arrayCount > 0:
+                        data.append(landmarks)
+                        labels.append([i])
                         images.append(face[0])
+
                     sec = sec + frameRate
                     sec = round(sec, 2)
                     success, image = getFrame(sec)
@@ -47,47 +49,47 @@ for j in [25]:
                     sec = sec + frameRate
                     sec = round(sec, 2)
                     success, image = getFrame(sec)
-                    print("face not detected")
+                    print("face not detected****")
             else:
                 sec = sec + frameRate
                 sec = round(sec, 2)
                 success, image = getFrame(sec)
                 print("face not detected")
 
-data = np.array(data)
-labels = np.array(labels)
-images = np.array(images)
-# print(images.shape)
-reshapedImages = images.reshape(images.shape[0], -1)
-# print(reshapedImages.shape)
+        data = np.array(data)
+        labels = np.array(labels)
+        images = np.array(images)
+        # print(images.shape)
+        reshapedImages = images.reshape(images.shape[0], -1)
+        print(reshapedImages.shape)
 
-# load_original_arr = reshapedImages.reshape(
-#     reshapedImages.shape[0], reshapedImages.shape[1] // images.shape[3] // images.shape[2],
-#     reshapedImages.shape[1] // images.shape[3] // images.shape[2],
-#     images.shape[3])
-# print(load_original_arr.shape)
-#
-#
-# if (load_original_arr == images).all():
-#     print("Yes, both the arrays are same")
-# else:
-#     print("No, both the arrays are not same")
+        # load_original_arr = reshapedImages.reshape(
+        #     reshapedImages.shape[0], reshapedImages.shape[1] // images.shape[3] // images.shape[2],
+        #     reshapedImages.shape[1] // images.shape[3] // images.shape[2],
+        #     images.shape[3])
+        # print(load_original_arr.shape)
+        #
+        #
+        # if (load_original_arr == images).all():
+        #     print("Yes, both the arrays are same")
+        # else:
+        #     print("No, both the arrays are not same")
 
-features = []
-index = 0
-for d in data:
-    eye = d[36:68]
-    ear = eye_aspect_ratio(eye)
-    mar = mouth_aspect_ratio(eye)
-    cir = circularity(eye)
-    mouth_eye = mouth_over_eye(eye)
-    features.append([ear, mar, cir, mouth_eye, reshapedImages[index][0], labels[index][0]])
-    index = index + 1
+        features = []
+        index = 0
+        for d in data:
+            eye = d[36:68]
+            ear = eye_aspect_ratio(eye)
+            mar = mouth_aspect_ratio(eye)
+            cir = circularity(eye)
+            mouth_eye = mouth_over_eye(eye)
+            features.append([ear, mar, cir, mouth_eye, reshapedImages[index][0], labels[index][0]])
+            index = index + 1
 
-features = np.array(features)
-
-np.savetxt("data/Fold3_part1_features_labels_27.csv", features, delimiter=",")
-# np.savetxt("data/Fold3_part1_images.csv", reshapedImages, delimiter=",")
+        features = np.array(features)
+        print(features.shape)
+        np.savetxt("data/Fold3_part1_features_labels_%d_%d.csv" % (j, i), features, delimiter=",")
+        # np.savetxt("data/Fold3_part1_images.csv", reshapedImages, delimiter=",")
 print("Extracted Successfully")
 
 

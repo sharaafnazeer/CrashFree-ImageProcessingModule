@@ -34,6 +34,7 @@ class FaceCropper(object):
 
             faceimg = gray[ny:ny + nr, nx:nx + nr]
             lastimg = cv2.resize(faceimg, (32, 32))
+            print(lastimg.shape)
             imageArray.append(lastimg)
             cv2.imwrite(name, lastimg)
 
