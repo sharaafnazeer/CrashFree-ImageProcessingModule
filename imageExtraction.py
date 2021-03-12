@@ -3,7 +3,7 @@ import numpy as np
 from mlxtend.image import extract_face_landmarks
 
 from featureExtraction.feature import eye_aspect_ratio, mouth_aspect_ratio, circularity, mouth_over_eye
-from helpers.face_cropper import FaceCropper
+from helpers.faceCropper import FaceCropper
 
 
 def getFrame(sec):
@@ -14,20 +14,21 @@ def getFrame(sec):
     return hasFrames, image
 
 
-data = []
-labels = []
-images = []
-for j in [25, 26, 27, 28, 29, 30]:
+for j in [28]:
+
     print("Printing video series > %d" % j)
     for i in [0, 5, 10]:
+        data = []
+        labels = []
+        images = []
         print("Printing video sub series > %d" % i)
-        vidcap = cv2.VideoCapture('video/Fold3_part1/' + str(j) + '/' + str(i) + '.mp4')
+        vidcap = cv2.VideoCapture('video/Fold3_part1/' + str(j) + '/' + str(i) + '.MOV')
 
         sec = 0
         frameRate = 1
         success, image = getFrame(sec)
         count = 0
-        while success and count < 240:
+        while success and count < 350:
             landmarks = extract_face_landmarks(image)
             # print(landmarks)
             if landmarks is not None:
@@ -91,8 +92,6 @@ for j in [25, 26, 27, 28, 29, 30]:
         np.savetxt("data/Fold3_part1_features_labels_%d_%d.csv" % (j, i), features, delimiter=",")
         # np.savetxt("data/Fold3_part1_images.csv", reshapedImages, delimiter=",")
 print("Extracted Successfully")
-
-
 
 ################ REFERENCE ##################
 
