@@ -132,3 +132,5 @@ data/
 video/
 sounds/
 models/
+Image/
+imagenet-data/

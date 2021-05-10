@@ -32,9 +32,7 @@ def circularity(eye):
     return 4 * math.pi * Area / (p ** 2)
 
 
-def mouth_over_eye(eye):
-    ear = eye_aspect_ratio(eye)
-    mar = mouth_aspect_ratio(eye)
+def mouth_over_eye(mar, ear):
     mouth_eye = mar / ear
     return mouth_eye
 

@@ -9,7 +9,7 @@ class FaceCropper(object):
     def __init__(self):
         self.cnn_face_detector = dlib.get_frontal_face_detector()
 
-    def generate(self, img, name):
+    def generate(self, img, name=''):
         imageArray = []
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         # Detect faces
@@ -35,9 +35,9 @@ class FaceCropper(object):
             faceimg = gray[ny:ny + nr, nx:nx + nr]
             print(faceimg.shape)
             if faceimg.shape[0] > 0 and faceimg.shape[1] > 0:
-                print("cc")
                 lastimg = cv2.resize(faceimg, (32, 32))
                 imageArray.append(lastimg)
-                cv2.imwrite(name, lastimg)
+                if name:
+                    cv2.imwrite(name, lastimg)
 
         return len(imageArray), imageArray
