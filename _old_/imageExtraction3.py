@@ -3,7 +3,6 @@ import cv2
 import dlib
 import numpy as np
 from imutils import face_utils
-from mlxtend.image import extract_face_landmarks
 
 from featureExtraction.feature import eye_aspect_ratio, mouth_aspect_ratio, circularity, mouth_over_eye, lip_distance
 

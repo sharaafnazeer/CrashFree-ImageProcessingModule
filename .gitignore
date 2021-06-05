@@ -133,4 +133,8 @@ video/
 sounds/
 models/
 Image/
+trainingDataSet/
 imagenet-data/
+evidence/
+myModels/
+neededData/
